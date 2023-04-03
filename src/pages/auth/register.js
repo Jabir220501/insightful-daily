@@ -1,5 +1,5 @@
 import React from "react";
-import Link from 'next/link'
+import Link from "next/link";
 
 function register() {
   return (
@@ -8,21 +8,23 @@ function register() {
         <div className="">
           <h1
             id="Logo"
-            className="text-logo absolute top-5 left-5 lg:top-11 lg:left-14"
+            className="text-logo absolute top-5 left-5 md:top-5 md:left-14"
           >
-            Insightful{" "}
-            <span id="logo_p2" className="font-semibold">
-              Daily
-              <span id="logo_dot" className="text-yellow font-semibold">
-                .
+            <Link href="/">
+              Insightful{" "}
+              <span id="logo_p2" className="font-semibold">
+                Daily
+                <span id="logo_dot" className="text-yellow font-semibold">
+                  .
+                </span>
               </span>
-            </span>
+            </Link>
           </h1>
         </div>
         <div id="container" className="h-full md:flex md:justify-between">
           <div
             id="form_field"
-            className="flex flex-col justify-center h-full px-5 pt-6 max-w-md w-full md:m-auto lg:px-0 lg:pt-0"
+            className="flex flex-col justify-center h-full px-5 pt-6 md:max-w-md w-full md:m-auto lg:px-0 lg:pt-0"
           >
             <div id="wrapper">
               <h2 className="text-yellow text-2xl font-bold mb-2 lg:text-3xl">
@@ -33,7 +35,10 @@ function register() {
                 project for free.
               </p>
               <form>
-                <label htmlFor="username" className="flex flex-col mb-5 lg:mb-6">
+                <label
+                  htmlFor="username"
+                  className="flex flex-col mb-5 lg:mb-6"
+                >
                   Username
                   <input
                     type="text"
@@ -83,7 +88,7 @@ function register() {
                   <p className="mt-4 text-xs text-cremeTxt lg:text-sm lg:mt-6">
                     Already have an account?{" "}
                     <span id="signup_mark" className="text-yellow">
-                    <Link href="/auth/login">Sign in</Link> 
+                      <Link href="/auth/login">Sign in</Link>
                     </span>
                   </p>
                 </div>

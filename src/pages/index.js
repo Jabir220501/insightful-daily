@@ -2,6 +2,7 @@ import Head from "next/head";
 import { Inter } from "@next/font/google";
 import styles from "@/styles/Home.module.css";
 import NotAuthenticatePage from "@/components/ui/NotAuthenticatePage";
+import HomePage from "@/components/ui/HomePage";
 
 export default function Home() {
   return (
@@ -13,7 +14,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        <NotAuthenticatePage />
+        {1==1 ? <HomePage/> : <NotAuthenticatePage />}
       </main>
     </>
   );

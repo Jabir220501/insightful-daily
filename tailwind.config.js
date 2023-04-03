@@ -10,11 +10,19 @@ module.exports = {
   theme: {
     extend: {
       maxWidth: {
-        '720': '45rem',
+        720: "45rem",
+        320: "20rem",
+        960: "60rem",
+      },
+      maxHeight: {
+        690: "43.125rem",
+      },
+      height: {
+        690: "43.125rem",
       },
       screens: {
         sm: "320px",
-        md: "768px",
+        md: "1024px",
         lg: "1440px",
         xl: "1920px",
       },
@@ -23,6 +31,7 @@ module.exports = {
       },
       backgroundImage: {
         "auth-pattern": "url('/img/auth-pattern.png')",
+        "bg-pattern": "url('/img/bg-pattern.png')",
       },
       colors: {
         yellow: "#FFC017",
