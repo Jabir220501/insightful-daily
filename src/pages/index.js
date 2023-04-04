@@ -3,8 +3,22 @@ import { Inter } from "@next/font/google";
 import styles from "@/styles/Home.module.css";
 import NotAuthenticatePage from "@/components/ui/NotAuthenticatePage";
 import HomePage from "@/components/ui/HomePage";
+import { auth } from "../database/config";
+import { onAuthStateChanged } from "firebase/auth";
+import { useEffect, useState } from "react";
 
 export default function Home() {
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const noUser = onAuthStateChanged(auth, (user) => {
+      setUser(user);
+      setLoading(false);
+    });
+    return noUser;
+  }, []);
+
   return (
     <>
       <Head>
@@ -13,9 +27,8 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main>
-        {1==1 ? <HomePage/> : <NotAuthenticatePage />}
-      </main>
+
+      {loading ? "" : user ? <HomePage /> : <NotAuthenticatePage />}
     </>
   );
 }

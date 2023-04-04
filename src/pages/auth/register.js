@@ -1,26 +1,42 @@
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
+import FormInput from "@/components/Auth/FormInput";
+import { auth, db } from "../../database/config";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { doc, setDoc } from "firebase/firestore";
+import Header from "@/components/Auth/Header";
+import DesktopUI from "@/components/Auth/DesktopUI";
 
 function register() {
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState(null);
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    try {
+      const { user } = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      await setDoc(doc(db, "users", user.uid), {
+        userId: user.uid,
+        username: username,
+        email: email,
+      });
+    } catch (error) {
+      setError(error.message);
+      console.log(error.message);
+    }
+  };
+
   return (
     <div className="bg-cremeBg w-screen h-screen">
       <div className="h-full">
-        <div className="">
-          <h1
-            id="Logo"
-            className="text-logo absolute top-5 left-5 md:top-5 md:left-14"
-          >
-            <Link href="/">
-              Insightful{" "}
-              <span id="logo_p2" className="font-semibold">
-                Daily
-                <span id="logo_dot" className="text-yellow font-semibold">
-                  .
-                </span>
-              </span>
-            </Link>
-          </h1>
-        </div>
+        <Header />
         <div id="container" className="h-full md:flex md:justify-between">
           <div
             id="form_field"
@@ -34,43 +50,29 @@ function register() {
                 Use these awesome forms to login or create new account in your
                 project for free.
               </p>
-              <form>
-                <label
-                  htmlFor="username"
-                  className="flex flex-col mb-5 lg:mb-6"
-                >
-                  Username
-                  <input
-                    type="text"
-                    name="username"
-                    id="username"
-                    placeholder="Your username"
-                    className="mt-1 p-4 rounded-xl text-sm text-cremeTxt"
-                  />
-                </label>
-                <label htmlFor="email" className="flex flex-col mb-5 lg:mb-6">
-                  Email
-                  <input
-                    type="text"
-                    name="email"
-                    id="name"
-                    placeholder="Your email address"
-                    className="mt-1 p-4 rounded-xl text-sm text-cremeTxt"
-                  />
-                </label>
-                <label
-                  htmlFor="password"
-                  className="flex flex-col mb-5 lg:mb-6"
-                >
-                  Password
-                  <input
-                    type="password"
-                    name="password"
-                    id="password"
-                    placeholder="Your password"
-                    className="mt-1 p-4 rounded-xl text-sm text-cremeTxt"
-                  />
-                </label>
+              <p className="text-red-800">{error}</p>
+              <form onSubmit={handleSubmit}>
+                <FormInput
+                  label="Username"
+                  type="text"
+                  placeholder="Your username"
+                  value={username}
+                  onChange={(event) => setUsername(event.target.value)}
+                />
+                <FormInput
+                  label="Email"
+                  type="email"
+                  placeholder="Your email address"
+                  value={email}
+                  onChange={(event) => setEmail(event.target.value)}
+                />
+                <FormInput
+                  label="Password"
+                  type="password"
+                  placeholder="Your password"
+                  value={password}
+                  onChange={(event) => setPassword(event.target.value)}
+                />
                 <label
                   htmlFor="remember_me"
                   className="flex align-center text-xs lg:text-sm "
@@ -95,12 +97,7 @@ function register() {
               </form>
             </div>
           </div>
-          <div id="desktop_design" className="max-w-720 w-full">
-            <div
-              id="container"
-              className="bg-yellow h-full bg-auth-pattern bg-cover bg-center bg-no-repeat hidden md:block"
-            ></div>
-          </div>
+          <DesktopUI />
         </div>
       </div>
     </div>

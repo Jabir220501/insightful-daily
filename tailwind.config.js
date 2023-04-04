@@ -24,6 +24,8 @@ module.exports = {
       height: {
         arItemB: "clamp(12.6875rem, 8.1rem + 22.9375vw, 35.625rem);",
         arItemS: "clamp(6.495rem, 2.4246rem + 20.3518vw, 20.74125rem);",
+        InnerImage:
+          "clamp(8.220714375rem, -1.3055rem + 47.6311vw, 41.5625rem);",
         690: "43.125rem",
       },
       screens: {
@@ -45,6 +47,11 @@ module.exports = {
         cremeTxt: "#A49993",
         green: "#13ce66",
         grBlack: "#00000085",
+      },
+      spacing: {
+        "4/10": "40%",
+        488: "30.5rem",
+        544: "34rem",
       },
     },
   },
