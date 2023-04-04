@@ -9,7 +9,7 @@ function HomePage() {
       <div id="wrapper" className="px-5 md:pt-8 md:px-14 h-full">
         <Header />
         <ArticleDay />
-        {/* <ArticleWeek /> */}
+        <ArticleWeek />
       </div>
     </div>
   );
