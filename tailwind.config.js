@@ -17,7 +17,13 @@ module.exports = {
       maxHeight: {
         690: "43.125rem",
       },
+      width: {
+        arItemB: "clamp(17.625rem, 6.275rem + 56.75vw, 74.375rem)",
+        arItemS: "clamp(8.220625rem, 2.3647rem + 29.2794vw, 37.5rem);",
+      },
       height: {
+        arItemB: "clamp(12.6875rem, 8.1rem + 22.9375vw, 35.625rem);",
+        arItemS: "clamp(6.495rem, 2.4246rem + 20.3518vw, 20.74125rem);",
         690: "43.125rem",
       },
       screens: {
@@ -38,6 +44,7 @@ module.exports = {
         cremeBg: "#F1DFD5",
         cremeTxt: "#A49993",
         green: "#13ce66",
+        grBlack: "#00000085",
       },
     },
   },
