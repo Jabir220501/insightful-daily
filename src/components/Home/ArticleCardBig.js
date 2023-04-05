@@ -1,4 +1,5 @@
 import React from "react";
+import Skeleton from "react-loading-skeleton";
 
 function ArticleCardBig(props) {
   return (
@@ -17,13 +18,13 @@ function ArticleCardBig(props) {
       <div className="absolute bottom-0 w-full h-full rounded-3xl bg-gradient-to-t from-grBlack to-transparent">
         <div id="content" className="absolute bottom-0 p-5 md:pb-20 md:px-10">
           <p className="font-medium text-xs text-yellow md:text-xl md:mb-1">
-            {props.genre}
+            {props.genre || <Skeleton />}
           </p>
           <h2 className="font-medium text-sm text-white mb-1 md:text-4xl md:mb-3">
-            {props.title}
+            {props.title || <Skeleton />}
           </h2>
           <p className="font-light text-xs text-white md:text-lg">
-            {props.description}
+            {props.description || <Skeleton />}
           </p>
         </div>
       </div>

@@ -1,22 +1,21 @@
 import Head from "next/head";
-import { Inter } from "@next/font/google";
-import styles from "@/styles/Home.module.css";
 import NotAuthenticatePage from "@/components/ui/NotAuthenticatePage";
 import HomePage from "@/components/ui/HomePage";
 import { auth } from "../database/config";
 import { onAuthStateChanged } from "firebase/auth";
 import { useEffect, useState } from "react";
+import Skeleton from 'react-loading-skeleton';
 
 export default function Home() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const noUser = onAuthStateChanged(auth, (user) => {
+    const isUserActive = onAuthStateChanged(auth, (user) => {
       setUser(user);
       setLoading(false);
     });
-    return noUser;
+    return isUserActive;
   }, []);
 
   return (
@@ -28,7 +27,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      {loading ? "" : user ? <HomePage /> : <NotAuthenticatePage />}
+      {loading ? <Skeleton /> : user ? <HomePage /> : <NotAuthenticatePage />}
     </>
   );
 }
