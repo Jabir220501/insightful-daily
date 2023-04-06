@@ -11,6 +11,7 @@ import RememberMe from "@/components/Auth/RememberMe";
 import AuthInfo from "@/components/Auth/AuthInfo";
 import SwitchAuth from "@/components/Auth/SwitchAuth";
 import SubmitBtn from "@/components/Auth/SubmitBtn";
+import axios from "axios";
 
 function register() {
   const [username, setUsername] = useState("");
@@ -29,16 +30,15 @@ function register() {
         email,
         password
       );
-      await setDoc(doc(db, "users", user.uid), {
+      const response = await axios.post("/api/users", {
         userId: user.uid,
         username: username,
         email: email,
       });
-
       sessionStorage.setItem("uid", user.uid);
-
       router.push("/");
     } catch (error) {
+      console.log(error);
       setError(error.message);
     }
   };
