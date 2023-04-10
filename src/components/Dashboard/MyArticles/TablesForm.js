@@ -4,12 +4,12 @@ import Dropdown from "./Dropdown";
 import TablesRow from "./TablesRow";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
-
+import { deleteArticle } from "@/lib/Fetcher";
+import axios from "axios";
+import { Router, useRouter } from "next/router";
 function TablesForm() {
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  console.log(data);
-
   useEffect(() => {
     const fetchData = async () => {
       const id = sessionStorage.getItem("uid");
@@ -19,14 +19,22 @@ function TablesForm() {
     };
     fetchData();
   }, []);
+  const router = useRouter();
+  const handleDelete = async (articleId) => {
+    try {
+      const response = await deleteArticle(articleId);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
-    <div class="relative overflow-x-auto shadow-sm sm:rounded-lg">
-      <div class="flex items-center justify-between pb-4">
+    <div className="relative overflow-x-auto shadow-sm sm:rounded-lg">
+      <div className="flex items-center justify-between pb-4">
         <Dropdown />
-        <div class="relative">
-          <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+        <div className="relative">
+          <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
             <svg
-              class="w-5 h-5 text-gray-500 dark:text-gray-400"
+              className="w-5 h-5 text-gray-500 dark:text-gray-400"
               aria-hidden="true"
               fill="currentColor"
               viewBox="0 0 20 20"
@@ -42,28 +50,28 @@ function TablesForm() {
           <input
             type="text"
             id="table-search"
-            class="block p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            className="block p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             placeholder="Search for items"
           />
         </div>
       </div>
-      <table class="w-full text-sm text-left text-gray-900 font-semibold">
-        <thead class="text-xs text-gray-900 uppercase bg-gray-50 ">
+      <table className="w-full text-sm text-left text-gray-900 font-semibold">
+        <thead className="text-xs text-gray-900 uppercase bg-gray-50 ">
           <tr>
-            <th scope="col" class="p-4"></th>
-            <th scope="col" class="px-6 py-3">
+            <th scope="col" className="p-4"></th>
+            <th scope="col" className="px-6 py-3">
               Article name
             </th>
-            <th scope="col" class="px-6 py-3">
+            <th scope="col" className="px-6 py-3">
               Genre
             </th>
-            <th scope="col" class="px-6 py-3">
+            <th scope="col" className="px-6 py-3">
               Status
             </th>
-            <th scope="col" class="px-6 py-3">
+            <th scope="col" className="px-6 py-3">
               Published
             </th>
-            <th scope="col" class="px-6 py-3">
+            <th scope="col" className="px-6 py-3">
               Actions
             </th>
           </tr>
@@ -79,7 +87,17 @@ function TablesForm() {
                 status={
                   articles.published.toString() == "true" ? "Online" : "Draft"
                 }
-                published={articles.created_at._methodName}
+                published={new Date(
+                  articles.created_at.seconds * 1000 +
+                    articles.created_at.nanoseconds / 1000000
+                ).toLocaleDateString("en-US", {
+                  timeZone: "UTC",
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                })}
+                handleDelete={handleDelete}
+                articleId={articles.articleId}
               />
             )
           )}

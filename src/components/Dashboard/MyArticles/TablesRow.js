@@ -1,6 +1,8 @@
+import { useRouter } from "next/router";
 import React from "react";
 
 function TablesRow(props) {
+  const router = useRouter();
   return (
     <tr className="bg-white border-b hover:bg-gray-50 ">
       <td className="w-4 p-4"></td>
@@ -15,12 +17,21 @@ function TablesRow(props) {
       </td>
       <td className="px-6 py-4">{props.published}</td>
       <td className="px-6 py-4">
-        <a href="#" className="text-cremeTxt hover:underline mr-3">
+        <a
+          href={`/api/article?id`}
+          className="text-cremeTxt hover:underline mr-3"
+        >
           Edit
         </a>
-        <a href="#" className=" text-red-600 hover:underline">
+        <button
+          onClick={async () => {
+            await props.handleDelete(props.articleId),
+              router.reload("/dashboard/my-article");
+          }}
+          className=" text-red-600 hover:underline"
+        >
           Delete
-        </a>
+        </button>
       </td>
     </tr>
   );

@@ -19,9 +19,10 @@ function TextEditorField(props) {
               "bold italic backcolor | alignleft aligncenter " +
               "alignright alignjustify | bullist numlist outdent indent | " +
               "removeformat | help",
-            content_style:
-              "body { width:100% }",
+            content_style: "body { width:100% }",
           }}
+          value={props.value}
+          onEditorChange={props.onChange}
         />
       </label>
     </>

@@ -1,5 +1,4 @@
-import { db } from "../../database/config";
-import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
+import { apiKey, getUserById, createUser } from "../../lib/users";
 
 export default async function users(req, res) {
   const apiKey = req.query.api_key;
@@ -11,36 +10,17 @@ export default async function users(req, res) {
   }
 
   if (req.method === "GET") {
-    const userId = req.query.id;
-    try {
-      const getUserQuery = query(
-        collection(db, "users"),
-        where("userId", "==", userId)
-      );
-      const querySnapshot = await getDocs(getUserQuery);
-      const userByUID = [];
-
-      querySnapshot.forEach((doc) => {
-        userByUID.push(doc.data());
-      });
-
-      res.status(200).json(userByUID);
-    } catch (error) {
-      res.status(500).json({ error: "User not found" });
-      console.log(error);
-    }
-  }
-
-  if (req.method === "POST") {
+    const users = await getUserById(req.query.id);
+    res.status(200).json(users);
+  } else if (req.method === "POST") {
     const { username, email, userId } = req.body;
+
+    const user = { username, email, userId };
+
     try {
-      const docRef = await addDoc(collection(db, "users"), {
-        username: username,
-        email: email,
-        userId: userId,
-      });
+      const result = await createUser(user);
       res
-        .status(201)
+        .status(200)
         .send({ success: true, message: "User created successfully" });
     } catch (error) {
       res.status(500).json({ error: "User could not be created" });

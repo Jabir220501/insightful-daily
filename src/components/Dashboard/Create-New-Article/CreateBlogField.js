@@ -2,7 +2,8 @@ import FormInput from "@/components/FormInput";
 import SubmitBtn from "@/components/SubmitBtn";
 import ToggleSwitch from "@/components/ToggleSwitch";
 import axios from "axios";
-import { serverTimestamp } from "firebase/firestore";
+import { serverTimestamp, Timestamp } from "firebase/firestore";
+import { useRouter } from "next/router";
 import React, { useState } from "react";
 import DragAndDropFile from "../../DragAndDropFile";
 import TextEditorField from "./TextEditorField";
@@ -14,7 +15,8 @@ function CreateBlogField() {
   const [mainPicture, setMainPicture] = useState("");
   const [body, setBody] = useState("");
   const [readingTime, setReadingTime] = useState("");
-
+  const [published, setPublished] = useState(false);
+  const router = useRouter();
   const handleSubmit = async (e) => {
     e.preventDefault();
     const id = sessionStorage.getItem("uid");
@@ -27,10 +29,12 @@ function CreateBlogField() {
         body: body,
         readingTime: readingTime,
         author_id: id,
-        views: "1",
-        published: true,
-        created_at: serverTimestamp,
+        views: 1,
+        published: published,
+        created_at: Timestamp.now(),
       });
+      console.log(response);
+      router.push("/dashboard/my-article");
     } catch (error) {
       console.log(error);
     }
@@ -67,11 +71,17 @@ function CreateBlogField() {
           <TextEditorField
             label="Tell us everything!"
             value={body}
-            onChange={(e) => setBody(e.target.value)}
+            onChange={(newContent) => setBody(newContent)}
           />
         </div>
         <div className="mb-5 lg:mb-6">
-          <ToggleSwitch label="Publish it" />
+          <ToggleSwitch
+            label="Publish"
+            value={published}
+            checked={published}
+            onClick={(e) => setPublished(!published)}
+            onChange={(e) => setPublished(e.target.value ? true : false)}
+          />
         </div>
         <div className="pb-5 lg:pb-6">
           <SubmitBtn type="submit" submit="Post Article" />
