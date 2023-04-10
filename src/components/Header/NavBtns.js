@@ -18,10 +18,9 @@ function Avatar() {
   const [hamburgerOpen, setHamburgerOpen] = useState(false);
 
   const style = hamburgerOpen ? "block" : "hidden";
-  console.log(hamburgerOpen, style);
   return (
     <div className="flex items-center">
-      <Link href="/panel/dashboard">
+      <Link href="/dashboard/home">
         <button className="hidden md:block mr-10 bg-yellow rounded-full p-2 px-12 text-white">
           Create a blog!
         </button>
@@ -59,7 +58,7 @@ function Avatar() {
             <ActiveLink href="/">Home</ActiveLink>
             <ActiveLink href="/article">Articles</ActiveLink>
             <ActiveLink href="/about">About</ActiveLink>
-            <ActiveLink href="/panel/dashboard">Create a article!</ActiveLink>
+            <ActiveLink href="/dashboard/home">Create a article!</ActiveLink>
             <div>
               <LogoutBtn />
             </div>

@@ -1,5 +1,5 @@
-import FormInput from "@/components/Auth/FormInput";
-import SubmitBtn from "@/components/Auth/SubmitBtn";
+import FormInput from "@/components/FormInput";
+import SubmitBtn from "@/components/SubmitBtn";
 import axios from "axios";
 import React, { useState } from "react";
 import { serverTimestamp } from "firebase/firestore";

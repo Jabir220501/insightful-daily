@@ -3,7 +3,7 @@ import React from "react";
 function ArticleCardSmall(props) {
   return (
     <div
-      className="w-full h-28 md:h-full rounded-3xl mr-4 bg-slate-700 md:mr-0 md:mb-5 bg-cover bg-no-repeat bg-bottom relative md:hover:bg-[length:105%] transition duration-200"
+      className="w-full h-28 md:h-full rounded-3xl mr-4 bg-slate-700 md:mr-0 md:mb-5 bg-cover bg-no-repeat bg-bottom relative md:hover:bg-[length:105%] transition duration-200 cursor-pointer"
       style={{
         backgroundImage: "url(/img/dummy-image-2.jpg)",
       }}

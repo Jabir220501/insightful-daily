@@ -8,7 +8,7 @@ function LogoutBtn() {
     const logOut = () => {
         signOut(auth).then(() => {
             router.push("/")
-            sessionStorage.clear
+            sessionStorage.removeItem("uid")
         }).catch((error) => {
             console.log(error)
         })

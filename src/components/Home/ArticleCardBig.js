@@ -9,7 +9,7 @@ function ArticleCardBig(props) {
         " " +
         props.height +
         " " +
-        "w-full rounded-3xl mb-5 bg-yellow relative bg-cover bg-no-repeat md:mb-0 md:mr-5 bg-center md:hover:bg-[length:105%] transition duration-200"
+        "w-full rounded-3xl mb-5 bg-yellow relative bg-cover bg-no-repeat md:mb-0 md:mr-5 bg-center md:hover:bg-[length:105%] transition duration-200 cursor-pointer"
       }
       style={{
         backgroundImage: "url(/img/dummy-image-1.jpg)",

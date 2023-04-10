@@ -10,6 +10,7 @@ function FormInput(props) {
         className="mt-1 p-4 rounded-xl text-sm text-cremeTxt"
         value={props.value}
         onChange={props.onChange}
+        required
       />
     </label>
   );

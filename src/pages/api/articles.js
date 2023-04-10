@@ -1,38 +1,79 @@
 import { db } from "../../database/config";
-import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  query,
+  where,
+} from "firebase/firestore";
 
 export default async function articles(req, res) {
   if (req.method === "GET") {
     try {
-      if (req.query.q) {
-        // Search by title
-        const searchQuery = query(
-          collection(db, "articles"),
-          where("title", "==", req.query.q)
+      if (req.query.id) {
+        // Search by id
+        const articleIdQ = req.query.id;
+        const querySnapshot = await getDoc(doc(db, "articles", articleIdQ));
+        const authorId = querySnapshot.data().author_id;
+        const articleId = querySnapshot.id;
+        const userRef = query(
+          collection(db, "users"),
+          where("userId", "==", authorId)
         );
-        const querySnapshot = await getDocs(searchQuery);
-        const articlesByName = [];
-        querySnapshot.forEach((doc) => {
-          articlesByName.push(doc.data());
-          console.log(doc.id, " => ", doc.data());
+        const userSnapshot = await getDocs(userRef);
+        const authorName = userSnapshot.docs[0].data().username;
+        const article = { ...querySnapshot.data(), articleId, authorName };
+        res.status(200).json(article);
+      } else if (req.query.author_id) {
+        const authorId = req.query.author_id;
+        const getAllArticleUserQuery = query(
+          collection(db, "articles"),
+          where("author_id", "==", authorId)
+        );
+        const querySnapshot = await getDocs(getAllArticleUserQuery);
+        let articles = [];
+        const articlesPromises = querySnapshot.docs.map(async (doc) => {
+          const authorId = doc.data().author_id;
+          const articleId = doc.id;
+          const userRef = query(
+            collection(db, "users"),
+            where("userId", "==", authorId)
+          );
+          const userSnapshot = await getDocs(userRef);
+          const authorName = userSnapshot.docs[0].data().username;
+          const article = { ...doc.data(), articleId, authorName };
+          return article;
         });
-        res.status(200).json(articlesByName);
+        articles = await Promise.all(articlesPromises);
+        res.status(200).json(articles);
       } else {
         // Get all articles
         const querySnapshot = await getDocs(collection(db, "articles"));
-        const articles = [];
-        querySnapshot.forEach((doc) => {
-          articles.push(doc.data());
+        let articles = [];
+
+        const articlesPromises = querySnapshot.docs.map(async (doc) => {
+          const authorId = doc.data().author_id;
+          const articleId = doc.id;
+          const userRef = query(
+            collection(db, "users"),
+            where("userId", "==", authorId)
+          );
+          const userSnapshot = await getDocs(userRef);
+          const authorName = userSnapshot.docs[0].data().username;
+          const article = { ...doc.data(), articleId, authorName };
+          return article;
         });
+
+        articles = await Promise.all(articlesPromises);
         res.status(200).json(articles);
       }
     } catch (error) {
       res.status(500).json({ error: "Article not found" });
       console.log(error);
     }
-  }
-  //   Create new article
-  if (req.method === "POST") {
+  } else if (req.method === "POST") {
     const {
       title,
       genre,
@@ -58,7 +99,7 @@ export default async function articles(req, res) {
       });
       res
         .status(201)
-        .send({ success: true, message: "User created successfully" });
+        .send({ success: true, message: "Article created successfully" });
     } catch (error) {
       res.status(500).json({ error: "Article could not be created" });
       console.log(error);
