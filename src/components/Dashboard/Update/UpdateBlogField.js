@@ -5,11 +5,11 @@ import axios from "axios";
 import { serverTimestamp, Timestamp } from "firebase/firestore";
 import Cookies from "js-cookie";
 import { useRouter } from "next/router";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import DragAndDropFile from "../../DragAndDropFile";
-import TextEditorField from "./TextEditorField";
+import TextEditorField from "../Create-New-Article/TextEditorField";
 
-function CreateBlogField() {
+function UpdateBlogField(props) {
   const [title, setTitle] = useState("");
   const [genre, setGenre] = useState("");
   const [description, setDescription] = useState("");
@@ -17,12 +17,37 @@ function CreateBlogField() {
   const [body, setBody] = useState("");
   const [readingTime, setReadingTime] = useState("");
   const [published, setPublished] = useState(false);
+  const [docIdParam, setDocIdParam] = useState("");
+  const [docIdData, setDocIdData] = useState([]);
   const router = useRouter();
+  useEffect(() => {
+    if (router.query && router.query.update) {
+      const splitQuery = router.query.update.split("update-article-");
+      setDocIdParam(splitQuery[1]);
+    }
+  }, [router.query]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`/api/articles?id=${docIdParam}`, {});
+        setDocIdData(response.data);
+      } catch (error) {
+        console.error(error);
+        setDocIdData([]);
+      }
+    };
+
+    if (docIdParam) {
+      fetchData();
+    }
+  }, [docIdParam]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const id = Cookies.get('uid');
+    const id = Cookies.get("uid");
     try {
-      const response = await axios.post("/api/articles", {
+      const response = await axios.put("/api/articles", {
         title: title,
         genre: genre,
         description: description,
@@ -48,21 +73,21 @@ function CreateBlogField() {
           type="text"
           label="What's the title?"
           placeholder="e.g. How Cats Stole My Heart and Took Over My Home"
-          value={title}
+          value={docIdData.title}
           onChange={(e) => setTitle(e.target.value)}
         />
         <FormInput
           type="text"
           label="What's the vibe?"
           placeholder="e.g. Furry Tales"
-          value={genre}
+          value={docIdData.genre}
           onChange={(e) => setGenre(e.target.value)}
         />
         <FormInput
           type="text"
           label="Give us a taste of what's to come!"
           placeholder="e.g. This article will give you a new appreciation for cats and their unique personalities."
-          value={description}
+          value={docIdData.description}
           onChange={(e) => setDescription(e.target.value)}
         />
         <div class="flex items-center justify-center w-full mb-5 lg:mb-6">
@@ -71,7 +96,7 @@ function CreateBlogField() {
         <div className="mb-5 lg:mb-6">
           <TextEditorField
             label="Tell us everything!"
-            value={body}
+            value={docIdData.body}
             onChange={(newContent) => setBody(newContent)}
           />
         </div>
@@ -92,4 +117,4 @@ function CreateBlogField() {
   );
 }
 
-export default CreateBlogField;
+export default UpdateBlogField;

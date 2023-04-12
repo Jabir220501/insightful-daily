@@ -13,7 +13,7 @@ export const getUserInfo = async (id) => {
 
 export const getAllArticle = async () => {
   try {
-    const response = await axios.get("/api/articles");
+    const response = await axios.get("http://localhost:3000/api/articles");
     return response.data;
   } catch (error) {
     console.log(error);

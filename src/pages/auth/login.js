@@ -11,6 +11,7 @@ import AuthInfo from "@/components/Auth/AuthInfo";
 import SwitchAuth from "@/components/Auth/SwitchAuth";
 import SubmitBtn from "@/components/SubmitBtn";
 import Head from "next/head";
+import Cookies from "js-cookie";
 
 function login() {
   const [email, setEmail] = useState("");
@@ -23,7 +24,7 @@ function login() {
     event.preventDefault();
     try {
       const { user } = await signInWithEmailAndPassword(auth, email, password);
-      sessionStorage.setItem("uid", user.uid);
+      Cookies.set("uid", user.uid, { expires: 365 });
       router.push("/");
     } catch (error) {
       setError(error.message);

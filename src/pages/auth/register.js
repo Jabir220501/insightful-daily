@@ -13,6 +13,7 @@ import SwitchAuth from "@/components/Auth/SwitchAuth";
 import SubmitBtn from "@/components/SubmitBtn";
 import axios from "axios";
 import Head from "next/head";
+import Cookies from "js-cookie";
 
 function register() {
   const [username, setUsername] = useState("");
@@ -36,7 +37,7 @@ function register() {
         username: username,
         email: email,
       });
-      sessionStorage.setItem("uid", user.uid);
+      Cookies.set("uid", user.uid, { expires: 365 });
       router.push("/");
     } catch (error) {
       console.log(error);

@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
 
@@ -17,12 +18,12 @@ function TablesRow(props) {
       </td>
       <td className="px-6 py-4">{props.published}</td>
       <td className="px-6 py-4">
-        <a
-          href={`/api/article?id`}
+        <Link
+          href={`update-article-${props.update}`}
           className="text-cremeTxt hover:underline mr-3"
         >
           Edit
-        </a>
+        </Link>
         <button
           onClick={async () => {
             await props.handleDelete(props.articleId),

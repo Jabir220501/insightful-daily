@@ -3,13 +3,14 @@ import NotAuthenticatePage from "@/components/ui/NotAuthenticatePage";
 import HomePage from "@/components/ui/HomePage";
 import { useEffect, useState } from "react";
 import Skeleton from "react-loading-skeleton";
+import Cookies from "js-cookie";
 
 export default function Home() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const currentUser = sessionStorage.getItem("uid");
+    const currentUser = Cookies.get('uid');
     currentUser ? setUser(true) : setUser(false);
     setLoading(false);
   }, []);

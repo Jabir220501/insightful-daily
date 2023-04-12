@@ -1,4 +1,5 @@
 import { getUserInfo } from "@/lib/Fetcher";
+import Cookies from "js-cookie";
 import React, { useState, useEffect } from "react";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
@@ -9,7 +10,7 @@ function CurrentUser() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const id = sessionStorage.getItem("uid");
+      const id = Cookies.get('uid');
       const result = await getUserInfo(id);
       setData(result);
       setIsLoading(false);
