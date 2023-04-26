@@ -2,9 +2,12 @@ import Header from "@/components/Header/Header";
 import ArticleInfo from "@/components/Posts/ArticleInfo";
 import AuthorLink from "@/components/Posts/AuthorLink";
 import BlogContent from "@/components/Posts/BlogContent";
-import React from "react";
+import { getArticleById } from "@/lib/articles";
+import { secondsToDate } from "@/lib/secondsToDate";
+import { useRouter } from "next/router";
+import React, { useEffect, useState } from "react";
 
-function InnerPageArticle() {
+function InnerPageArticle({ article }) {
   return (
     <div className="w-full h-screen ">
       <div
@@ -13,10 +16,17 @@ function InnerPageArticle() {
       >
         <Header />
         <ArticleInfo
-          genre="Productivity"
-          title="The Need for Community and Connection"
-          description="The Cost of Loneliness: Women, Work and The Invisible Force That’s
-          Undermining Them As They Rise"
+          genre={article.genre}
+          title={article.title}
+          description={article.description}
+          author={article.authorName}
+          published={secondsToDate(
+            article.created_at.seconds,
+            article.created_at.nanoseconds
+          )}
+          readingTime="10"
+          authorNameLink={article.authorName.replace(/\s+/g, "-").toLowerCase()}
+          authorInfoLink={article.author_id}
         />
         <div className="w-full h-InnerImage px-5 md:px-14 absolute -bottom-10 md:-bottom-2/4 ">
           <div
@@ -26,11 +36,30 @@ function InnerPageArticle() {
         </div>
       </div>
       <div id="content_wrapper" className="px-5 md:px-14 md:max-w-4xl m-auto">
-        <BlogContent published="Published March 28, 2023" />
+        <BlogContent
+          published={
+            "Published " +
+            secondsToDate(
+              article.created_at.seconds,
+              article.created_at.nanoseconds
+            )
+          }
+          content={article.body}
+        />
         <AuthorLink />
       </div>
     </div>
   );
+}
+
+export async function getServerSideProps({ query }) {
+  const docIdParam = query.post?.substr(query.post.length - 20) || "";
+  const article = await getArticleById(docIdParam);
+  return {
+    props: {
+      article,
+    },
+  };
 }
 
 export default InnerPageArticle;

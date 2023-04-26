@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React from "react";
 import User from "../User";
 
@@ -20,13 +21,24 @@ function ArticleInfo(props) {
         {props.description}
       </p>
       <div id="author" className="flex items-center">
-        <User />
+        <Link
+          href={"/author/" + props.authorNameLink + "-" + props.authorInfoLink}
+        >
+          <User />
+        </Link>
         <div id="info">
-          <h4 id="name" className="text-xs font-medium">
-            Trix Visuals
-          </h4>
+          <Link
+            href={
+              "/author/" + props.authorNameLink + "-" + props.authorInfoLink
+            }
+          >
+            <h4 id="name" className="text-xs font-medium">
+              {props.author}
+            </h4>
+          </Link>
           <p className="text-yellow text-xs">
-            18 July 2022 <span className="text-cremeTxt">/ 10 min read</span>
+            {props.published}{" "}
+            <span className="text-cremeTxt">/{props.readingTime}min read</span>
           </p>
         </div>
       </div>

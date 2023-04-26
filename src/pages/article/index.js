@@ -15,9 +15,9 @@ function index({ articles }) {
       <Header />
       <div id="wrapper" className="px-5 md:pt-8 md:px-14 h-full">
         <div className="mt-28 mb-9 ">
-        <div className="flex justify-end mb-5">
-        <SearchInput />
-        </div>
+          <div className="flex justify-end mb-5">
+            <SearchInput />
+          </div>
           <div className="row md:flex md:flex-wrap">
             {articles.map((article) =>
               !article.published ? (
@@ -27,24 +27,27 @@ function index({ articles }) {
                   <Link
                     href={`/article/post/${article.title
                       .replace(/\s+/g, "-")
+                      .replaceAll("/", "-")
                       .toLowerCase()}-${article.articleId}`}
                     className="h-full"
                   >
                     <div
-                      className="img h-52 bg-cover bg-no-repeat bg-yellow md:hover:bg-[length:105%] transition duration-200 mb-2 "
+                      className="img h-52 bg-cover bg-no-repeat bg-yellow md:hover:bg-[length:105%] transition duration-200 mb-2 rounded-2xl"
                       style={{
                         backgroundImage: "url(/img/dummy-image-1.jpg)",
                       }}
                     ></div>
-                    <p className="text-sm mb-2 md:mb-1 "></p>
-                    <h2 className="font-bold text-xl mb-2">{article.title}</h2>
-                    <p className="text-sm mb-4 text-cremeTxt">
+                    <p className="text-xs mt-1 text-yellow">{article.genre}</p>
+                    <h2 className="font-semibold text-xl mb-2">
+                      {article.title}
+                    </h2>
+                    <p className="text-sm font-normal mb-4 text-cremeTxt">
                       {lengthCharacter(article.description, 75)}
                     </p>
-                    <div className="author flex">
+                    <div className="author flex items-center">
                       <div id="author" className="flex items-center">
                         <User />
-                        <div id="info">
+                        <div id="info" className="ml-1">
                           <h4 id="name" className="text-xs font-medium">
                             {article.authorName}
                           </h4>

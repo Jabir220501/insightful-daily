@@ -41,13 +41,22 @@ function UpdateBlogField(props) {
     if (docIdParam) {
       fetchData();
     }
-  }, [docIdParam]);
+
+    const test = () => {
+      setTitle(docIdData.title);
+    };
+
+    if (docIdData.title) {
+      test();
+    }
+  }, [docIdParam, docIdData.title]);
+  console.log(title);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const id = Cookies.get("uid");
     try {
-      const response = await axios.put("/api/articles", {
+      const response = await axios.put(`/api/articles?${docIdParam}`, {
         title: title,
         genre: genre,
         description: description,
@@ -73,7 +82,7 @@ function UpdateBlogField(props) {
           type="text"
           label="What's the title?"
           placeholder="e.g. How Cats Stole My Heart and Took Over My Home"
-          value={docIdData.title}
+          value={title}
           onChange={(e) => setTitle(e.target.value)}
         />
         <FormInput

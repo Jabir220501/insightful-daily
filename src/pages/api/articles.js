@@ -4,6 +4,7 @@ import {
   getArticlesByAuthorId,
   createArticle,
   deleteArticle,
+  updateArticle,
 } from "../../lib/articles";
 
 export default async function articles(req, res) {
@@ -56,6 +57,29 @@ export default async function articles(req, res) {
       console.log(error);
     }
   } else if (req.method === "PUT") {
+    if (req.query.article_id) {
+      const {
+        title,
+        genre,
+        description,
+        readingTime,
+        body,
+        author_id,
+        published,
+      } = req.body;
+
+      const article = {
+        title,
+        genre,
+        description,
+        readingTime,
+        body,
+        author_id,
+        published,
+      };
+
+      const result = await updateArticle(article, req.query.article_id);
+    }
   } else if (req.method === "DELETE") {
     try {
       if (req.query.article_id) {

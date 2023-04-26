@@ -20,7 +20,7 @@ function CreateBlogField() {
   const router = useRouter();
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const id = Cookies.get('uid');
+    const id = Cookies.get("uid");
     try {
       const response = await axios.post("/api/articles", {
         title: title,
@@ -73,6 +73,15 @@ function CreateBlogField() {
             label="Tell us everything!"
             value={body}
             onChange={(newContent) => setBody(newContent)}
+          />
+        </div>
+        <div className="md:w-1/4">
+          <FormInput
+            type="number"
+            label="How long are we gonna enjoy?"
+            placeholder="e.g. 10 minutes"
+            value={readingTime}
+            onChange={(e) => setReadingTime(e.target.value)}
           />
         </div>
         <div className="mb-5 lg:mb-6">

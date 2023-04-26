@@ -8,6 +8,8 @@ import {
   getDocs,
   orderBy,
   query,
+  setDoc,
+  updateDoc,
   where,
 } from "firebase/firestore";
 
@@ -83,6 +85,15 @@ export async function createArticle(article) {
     throw new Error("Article could not be created");
   }
 }
+// Handle UPDATE requests for the /articles route
+export async function updateArticle(article, articleId) {
+  try {
+    await updateDoc(collection(db, "articles", articleId), article);
+    return true;
+  } catch (error) {
+    throw new Error("Article could not be updated");
+  }
+}
 
 // Handle DELETE requests for the /articles route
 export async function deleteArticle(articleId) {
@@ -90,7 +101,7 @@ export async function deleteArticle(articleId) {
     await deleteDoc(doc(db, "articles", articleId));
     return true;
   } catch (error) {
-    console.log(error)
+    console.log(error);
     throw new Error("Article could not be deleted");
   }
 }
