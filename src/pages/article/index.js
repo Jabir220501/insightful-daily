@@ -1,15 +1,18 @@
+import Author from "@/components/Author";
 import Header from "@/components/Header/Header";
-import ArticleCardBig from "@/components/Home/ArticleCardBig";
-import AuthorLink from "@/components/Posts/AuthorLink";
 import SearchInput from "@/components/SearchInput";
-import User from "@/components/User";
 import { getAllArticle } from "@/lib/Fetcher";
 import { lengthCharacter } from "@/lib/limitedWords";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 
-function index({ articles }) {
-  console.log(articles);
+function index({ articles, isLoading }) {
+  const [issLoading, setIsLoading] = useState(true);
+  useEffect(() => {
+    setIsLoading(isLoading);
+  }, []);
   return (
     <div>
       <Header />
@@ -37,16 +40,47 @@ function index({ articles }) {
                         backgroundImage: "url(/img/dummy-image-1.jpg)",
                       }}
                     ></div>
-                    <p className="text-xs mt-1 text-yellow">{article.genre}</p>
-                    <h2 className="font-semibold text-xl mb-2">
-                      {article.title}
-                    </h2>
-                    <p className="text-sm font-normal mb-4 text-cremeTxt">
-                      {lengthCharacter(article.description, 75)}
-                    </p>
+                    {issLoading ? (
+                      <Skeleton width={40} height={10} count={1} />
+                    ) : (
+                      <p className="text-xs mt-1 text-yellow">
+                        {article.genre}
+                      </p>
+                    )}
+                    {issLoading ? (
+                      <Skeleton width={300} height={30} count={1} />
+                    ) : (
+                      <h2 className="font-semibold text-xl mb-2">
+                        {article.title}
+                      </h2>
+                    )}
+                    {issLoading ? (
+                      <div>
+                        <div style={{ marginBottom: "-8px" }}>
+                          <Skeleton width={250} height={5} count={1} />
+                        </div>
+                        <div style={{ marginBottom: "5px" }}>
+                          <Skeleton width={200} height={5} count={1} />
+                        </div>
+                      </div>
+                    ) : (
+                      <p className="text-sm font-normal mb-4 text-cremeTxt">
+                        {lengthCharacter(article.description, 75)}
+                      </p>
+                    )}
                     <div className="author flex items-center">
                       <div id="author" className="flex items-center">
-                        <User />
+                        {issLoading ? (
+                          <Skeleton circle={true} width={40} height={40} />
+                        ) : (
+                          <Author
+                            firstName={article.authorName.charAt(0)}
+                            lastName={article.authorName
+                              .split(" ")[1]
+                              ?.charAt(0)}
+                          />
+                        )}
+
                         <div id="info" className="ml-1">
                           <h4 id="name" className="text-xs font-medium">
                             {article.authorName}
@@ -61,7 +95,7 @@ function index({ articles }) {
                               month: "long",
                               day: "numeric",
                             })}
-                            <span className="text-cremeTxt">/ 10 min read</span>
+                            <span className="text-cremeTxt">{`/ ${article.readingTime} min read`}</span>
                           </p>
                         </div>
                       </div>
@@ -78,12 +112,24 @@ function index({ articles }) {
 }
 
 export async function getServerSideProps() {
-  const articles = await getAllArticle();
-  return {
-    props: {
-      articles,
-    },
-  };
+  try {
+    const articles = await getAllArticle();
+    return {
+      props: {
+        articles,
+        isLoading: false,
+      },
+    };
+  } catch (error) {
+    console.log(error);
+    return {
+      props: {
+        articles: null,
+        isLoading: false,
+      },
+    };
+  }
 }
+
 
 export default index;

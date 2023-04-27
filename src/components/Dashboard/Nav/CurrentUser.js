@@ -39,4 +39,4 @@ function CurrentUser() {
   );
 }
 
-export default CurrentUser;
+export default CurrentUser

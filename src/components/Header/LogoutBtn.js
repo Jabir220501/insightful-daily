@@ -2,13 +2,14 @@ import React from "react";
 import { auth } from "../../database/config";
 import { signOut } from "firebase/auth";
 import { useRouter } from "next/router";
+import Cookies from "js-cookie";
 
 function LogoutBtn() {
     const router = useRouter();
     const logOut = () => {
         signOut(auth).then(() => {
-            router.push("/")
-            sessionStorage.removeItem("uid")
+            router.reload("/")
+            Cookies.remove("uid")
         }).catch((error) => {
             console.log(error)
         })

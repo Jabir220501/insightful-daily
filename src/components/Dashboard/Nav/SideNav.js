@@ -1,13 +1,25 @@
+import AppContext from "@/lib/appContext";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useContext } from "react";
 import NavigationBtn from "./NavigationBtn";
 
 function SideNav() {
-  const [hamburgerOpen, setHamburgerOpen] = useState(false);
+  const stateManagement = useContext(AppContext);
+  const hamburgerOpen = stateManagement.hamburgerOpen;
 
-  const style = hamburgerOpen ? "bg-gray-50 rounded-xl " : "-translate-x-full bg-gray-50 rounded-xl ";
+  const style = hamburgerOpen
+    ? "bg-gray-50 rounded-xl "
+    : "-translate-x-full bg-gray-50 rounded-xl ";
   return (
-    <aside className={`max-w-62.5 z-50 fixed inset-y-0 my-4 ml-4 w-full flex-wrap items-center justify-between overflow-y-auto rounded-2md border-0  p-0 antialiased shadow-none transition-transform duration-200 md:left-0 md:translate-x-0 md:bg-transparent ${style}`}>
+    <aside
+      className={`max-w-62.5 z-50 fixed inset-y-0 my-4 ml-4 w-full flex-wrap items-center justify-between overflow-y-auto rounded-2md border-0  p-0 antialiased shadow-none transition-transform duration-200 md:left-0 md:translate-x-0 md:bg-transparent ${style}`}
+      onClick={() => {
+        stateManagement.setHamburgerOpen(true);
+        stateManagement.hamburgerOpen
+          ? !stateManagement.setHamburgerOpen(false)
+          : "";
+      }}
+    >
       <div className="h-19.5">
         <h1 id="Logo" className="flex items-center justify-center h-full">
           <Link href="/" className="text-2xl">

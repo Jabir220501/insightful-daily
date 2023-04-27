@@ -1,17 +1,15 @@
 import User from "@/components/User";
-import React, { useState } from "react";
+import AppContext from "@/lib/appContext";
+import React, { useContext } from "react";
 import CurrentUser from "./CurrentUser";
 
 function NavBar() {
+  const stateManagement = useContext(AppContext);
+  console.log(stateManagement.hamburgerOpen);
   return (
-    <nav
-      className="relative flex flex-wrap items-center justify-between px-0 py-6 mx-6 transition-all shadow-none duration-250 ease-soft-in rounded-2xl md:flex-nowrap md:justify-start"
-      navbar-main
-      navbar-scroll="true"
-    >
+    <nav className="relative flex flex-wrap items-center justify-between px-0 py-6 mx-6 transition-all shadow-none duration-250 ease-soft-in rounded-2xl md:flex-nowrap md:justify-start">
       <div className="flex items-center justify-between w-full px-4 py-1 mx-auto flex-wrap-inherit">
         <CurrentUser />
-
         <div className="flex items-center mt-2 grow sm:mt-0 sm:mr-0 md:mr-0 md:flex justify-end md:basis-auto">
           <div className="flex items-center md:ml-auto md:pr-4">
             <div className="relative flex flex-wrap items-stretch w-full transition-all rounded-lg ease-soft">
@@ -27,7 +25,15 @@ function NavBar() {
           </div>
           <ul className="flex flex-row justify-end pl-0 mb-0 list-none md-max:w-full">
             <User />
-            <li className="flex items-center pl-4 md:hidden">
+            <li
+              className="flex items-center pl-4 md:hidden"
+              onClick={() => {
+                stateManagement.setHamburgerOpen(true);
+                stateManagement.hamburgerOpen
+                  ? !stateManagement.setHamburgerOpen(false)
+                  : "";
+              }}
+            >
               <div className="block p-0 transition-all ease-nav-brand text-sm text-yellow">
                 <div className="w-4.5 overflow-hidden">
                   <i className="ease-soft mb-0.75 relative block h-0.5 rounded-sm bg-yellow transition-all"></i>

@@ -4,8 +4,6 @@ import AuthorLink from "@/components/Posts/AuthorLink";
 import BlogContent from "@/components/Posts/BlogContent";
 import { getArticleById } from "@/lib/articles";
 import { secondsToDate } from "@/lib/secondsToDate";
-import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
 
 function InnerPageArticle({ article }) {
   return (
@@ -27,8 +25,10 @@ function InnerPageArticle({ article }) {
           readingTime="10"
           authorNameLink={article.authorName.replace(/\s+/g, "-").toLowerCase()}
           authorInfoLink={article.author_id}
+          firstName={article.authorName.charAt(0)}
+          lastName={article.authorName.split(" ")[1]?.charAt(0)}
         />
-        <div className="w-full h-InnerImage px-5 md:px-14 absolute -bottom-10 md:-bottom-2/4 ">
+        <div className="w-full h-InnerImage px-5 md:px-14 absolute -bottom-10 md:-bottom-2/4">
           <div
             className="h-full bg-cover bg-no-repeat "
             style={{ backgroundImage: "url(/img/dummy-image-1.jpg)" }}
@@ -46,7 +46,11 @@ function InnerPageArticle({ article }) {
           }
           content={article.body}
         />
-        <AuthorLink />
+        <AuthorLink
+          author={article.authorName}
+          firstName={article.authorName.charAt(0)}
+          lastName={article.authorName.split(" ")[1]?.charAt(0)}
+        />
       </div>
     </div>
   );

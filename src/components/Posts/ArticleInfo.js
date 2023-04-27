@@ -1,6 +1,5 @@
 import Link from "next/link";
 import React from "react";
-import User from "../User";
 
 function ArticleInfo(props) {
   return (
@@ -24,7 +23,11 @@ function ArticleInfo(props) {
         <Link
           href={"/author/" + props.authorNameLink + "-" + props.authorInfoLink}
         >
-          <User />
+          <div class="relative inline-flex items-center justify-center w-10 h-10 overflow-hidden rounded-full bg-gray-800 mr-1">
+            <span class="text-gray-300">
+              {props.firstName + `${props.lastName ? props.lastName : ""}`}
+            </span>
+          </div>
         </Link>
         <div id="info">
           <Link

@@ -7,7 +7,7 @@ import LogoutBtn from "./LogoutBtn";
 function ActiveLink({ href, children }) {
   const router = useRouter();
   const isActive = router.asPath === href;
-  const className = isActive ? "text-white" : "text-gray-900";
+  const className = isActive ? "text-yellow" : "text-gray-900";
   return (
     <li className={`text-md ${className}`}>
       <Link href={href}>{children}</Link>
@@ -40,7 +40,7 @@ function Avatar() {
       <div
         id="hamburger-open"
         className={
-          "fixed top-0 right-0 h-screen w-screen bg-yellow z-50 md:hidden " +
+          "fixed top-0 right-0 h-screen w-screen bg-gray-50 z-50 md:hidden " +
           style
         }
       >
@@ -54,7 +54,7 @@ function Avatar() {
           </div>
         </div>
         <nav className="w-full h-full flex items-center justify-center">
-          <ul className="space-y-14 md:hidden text-2xl">
+          <ul className="space-y-10 md:hidden text-xl">
             <ActiveLink href="/">Home</ActiveLink>
             <ActiveLink href="/article">Articles</ActiveLink>
             <ActiveLink href="/about">About</ActiveLink>

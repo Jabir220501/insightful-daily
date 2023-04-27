@@ -64,7 +64,6 @@ export default async function articles(req, res) {
         description,
         readingTime,
         body,
-        author_id,
         published,
       } = req.body;
 
@@ -74,11 +73,15 @@ export default async function articles(req, res) {
         description,
         readingTime,
         body,
-        author_id,
         published,
       };
-
-      const result = await updateArticle(article, req.query.article_id);
+      try{
+        const result = await updateArticle(article, req.query.article_id);
+        res.status(200).json({ success: true });
+      }catch(error){
+        res.status(500).json({ error: "Article could not be updated" });
+        console.log(error)
+      }
     }
   } else if (req.method === "DELETE") {
     try {

@@ -88,7 +88,7 @@ export async function createArticle(article) {
 // Handle UPDATE requests for the /articles route
 export async function updateArticle(article, articleId) {
   try {
-    await updateDoc(collection(db, "articles", articleId), article);
+    await setDoc(doc(db, "articles", articleId), article, { merge: true });
     return true;
   } catch (error) {
     throw new Error("Article could not be updated");
