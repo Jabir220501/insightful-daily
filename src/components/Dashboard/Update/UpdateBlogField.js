@@ -130,7 +130,7 @@ function UpdateBlogField(props) {
           />
         </div>
         <div className="pb-5 lg:pb-6">
-          <SubmitBtn type="submit" submit="Post Article" />
+          <SubmitBtn type="submit" submit="Update Article" />
         </div>
       </form>
     </div>
